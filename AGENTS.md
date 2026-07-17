@@ -4,9 +4,9 @@
 
 ## Authoritative Source
 
-The **canonical project instructions and standards are in [`CLAUDE.md`](CLAUDE.md)** (root directory). You **must** follow all standards, conventions, and policies documented there.
+The **canonical project instructions and standards are in [`AGENTS.md`](AGENTS.md)** (root directory). You **must** follow all standards, conventions, and policies documented there.
 
-**Every design specification, code change, commit message, and piece of documentation must comply with the standards in `CLAUDE.md`.**
+**Every design specification, code change, commit message, and piece of documentation must comply with the standards in `AGENTS.md`.**
 
 ## Authenticity
 
@@ -20,16 +20,8 @@ The **canonical project instructions and standards are in [`CLAUDE.md`](CLAUDE.m
 
 ## Scope-Specific Guidance
 
-For work within a specific subsystem, also consult the **federated `CLAUDE.md` file in that folder**. These provide additional detail and workflows tailored to that subsystem:
+For work within a specific subsystem, also consult the **federated `AGENTS.md` file in that folder**. These provide additional detail and workflows tailored to that subsystem:
 
-- **[`airframe/CLAUDE.md`](airframe/CLAUDE.md)** — Structural design, CAD/3D modeling, hull-frame coordinate system, fabrication standards, STL validation
-- **[`avionics/CLAUDE.md`](avionics/CLAUDE.md)** — KiCad PCB design, capes, avionics stacks, security, communications protocols
-- **[`docs/CLAUDE.md`](docs/CLAUDE.md)** — Documentation standards, standards vetting policy, references management
-- **[`gcs/CLAUDE.md`](gcs/CLAUDE.md)** — Ground Control Station (Malcolm), command and control, telemetry
-- **[`tools/CLAUDE.md`](tools/CLAUDE.md)** — Build automation, bake tool, Blender pipeline, SCAD generation
-- **[`current-specification/CLAUDE.md`](current-specification/CLAUDE.md)** — Active design specifications, revision numbering, traceability
-- **[`graphical-build-guide/CLAUDE.md`](graphical-build-guide/CLAUDE.md)** — Phased build instructions, fabrication checklists, troubleshooting
-- **[`deferred/CLAUDE.md`](deferred/CLAUDE.md)** — Phase 11+ work, planned upgrades, design decision history
 
 **Subordinate files are authoritative for their scope.** If a subordinate file contradicts the root file, follow the subordinate.
 
@@ -105,19 +97,10 @@ For work within a specific subsystem, also consult the **federated `CLAUDE.md` f
 
 ### Coordinate System (Hull Frame)
 
-**All design artifacts use the single validated hull frame:**
-
-- **X** = positive port (left)
-- **Y** = positive aft (back)  
-- **Z** = positive dorsal (up)
-- **Origin** = the SerenityAssembly.FCStd world origin
-
-As of R1 (2026-06-11), placements are **baked into primary STL vertex data** via `tools/bake_hull_frame.py`. Primary components import with identity placement.
-
 ## Before You Act
 
-1. **Read `CLAUDE.md`** in full before starting any task
-2. **Check for subordinate CLAUDE.md** in the target folder
+1. **Read `AGENTS.md`** in full before starting any task
+2. **Check for subordinate AGENTS.md** in the target folder
 3. **Verify all standards citations** against `REFERENCES.md` before using them
 4. **Check `TODO.md`** for context on ongoing work
 5. **Review git history** for recent commits and patterns
@@ -134,9 +117,9 @@ As of R1 (2026-06-11), placements are **baked into primary STL vertex data** via
 
 **If you encounter conflicting guidance:**
 
-1. Root CLAUDE.md (project-wide) > Subordinate CLAUDE.md (scope-specific)
-1.1. The subordinate CLAUDE.md guidance is authoritative unless excluded by the root CLAUDE.md.
-1.2 All conflicts between Root and Subordinate CLAUDE.md **shall** be immediately be brought to the user's attention for adjudication.  No work will procede until adjudication is received.  
+1. Root AGENTS.md (project-wide) > Subordinate AGENTS.md (scope-specific)
+1.1. The subordinate AGENTS.md guidance is authoritative unless excluded by the root AGENTS.md.
+1.2 All conflicts between Root and Subordinate AGENTS.md **shall** be immediately be brought to the user's attention for adjudication.  No work will procede until adjudication is received.  
 2. REFERENCES.md (verified standards) > comments or assumptions
 3. Actual code/model state > documentation (if they diverge, update the docs to match reality and investigate why they diverged)
 
@@ -147,4 +130,81 @@ If the task is unclear or you lack required information, **ask the user explicit
 ---
 
 **Last updated:** 2026-06-30  
-**Authoritative file:** [`CLAUDE.md`](CLAUDE.md)
+**Authoritative file:** [`AGENTS.md`](AGENTS.md)
+
+## Design Philosophy
+
+- All design decisions are for an **actual physical build**, not hypothetical or conceptual work.
+Every component will be fabricated or procured; design accordingly.
+
+## Scope-Specific Guidance
+
+
+## Standards Vetting Policy
+
+- **Every design specification with any effect beyond cosmetic appearance must be vetted against applicable industry standards and/or regulations before implementation.**  Standards citations shall be recorded in `REFERENCES.md`, which catalogs every applicable standard with:
+    - Standard designation and full title
+    - Validated URL for official access (verified against the issuing body)
+    - Specific chapter, section, and paragraph applied
+    - Every repository location where the standard is cited
+
+- **All citations throughout the codebase** — in code comments, documentation, schematics, and build guides — shall reference the `REFERENCES.md` REF-ID (e.g., `[REF-FCC-001 §15.247(b)(3)(ii)]`) and shall include chapter, section, and paragraph to enable auditing.
+
+- **No fabricated, unverifiable, or incorrectly attributed references are permitted.**  Any citation that cannot be traced to a specific published document with a validated URL must be removed or corrected.  Removed or superseded citations are documented in the "Removed / Superseded Citations" section of `REFERENCES.md`.
+
+- **Applicable standards bodies for this project:** FAA (airworthiness, registration, operations), FCC (radio frequency), NIST (cybersecurity and information security), DoD/DLA (MIL-STD bus protocols), ISO (data bus protocols), IEC (component safety), VDE (isolator certification), IEEE (networking standards), ISA/IEC 62443 (OT/ICS cybersecurity),
+  AUVSI/ASTM F38 (UAS design guidelines), and ICAO (international aviation rules).
+
+## Engineering Requirements
+
+- **Weight, balance, power, space, and component capabilities must always be accounted for.**
+
+  Size fasteners, walls, and structural members for real loads. Quote actual masses and CG shifts
+  when adding or removing geometry. Do not leave these as "TBD."
+
+- **All measurements shall be expressed imperial-primary with metric in parentheses: e.g. 10 in (254 mm), 2.5 lbm (1.13 kg), 4.8 lbf (21.4 N).**
+    - Use **lbm** for mass (pounds-mass) and **lbf** for force (pounds-force); never write bare "lb" where the distinction matters.
+    - Metric equivalents use **kg** for mass and **N** for force.
+    - Thrust, lift, and aerodynamic loads are forces → lbf / (N).  Component weights and payload capacity are masses → lbm / (kg).
+    - **Airspeed and wind speed are expressed in knots (kt)** with m/s in parentheses where needed for calculation.  Never use mph or km/h for airspeed.
+
+
+
+## Coding Standards
+
+- All code shall be clean and syntactically correct.  **Secure coding practices shall be used throughout.**
+
+- All code and documentation shall be written in accordance with **strict linting rules and all linting standards shall be observed.**
+
+- NIST SP 800-82 Rev 3 [REF-NIST-002 §5.3, §5.4, §6.2.5], NIST SP 800-160 Vol 1 Rev 1
+  [REF-NIST-003 Ch.3], and NIST SP 800-207 [REF-NIST-001 §2.1] shall be complied with
+  in information processing and system security engineering
+
+- All code shall use 4 space indenting, whether or not required by the language.
+
+- All code shall use verbose commenting, in strict conformity to each language.  In the case of a language that doesn't allow inline comments, such as kicad files, comments shall be included in an accompanying Markdown file.
+
+- Commenting in KiCad files using ; or # is strictly prohibited. All comments for kiCad files must be either in a Markdown file or comment blocks such as: ( comment 1 "hello world" )
+
+## Licensing and Attribution
+
+- All work is **published under CC BY 4.0**.
+- The author of this project is Steve Griffing, PE(CSE), CISSP-ISSEP, CPP.  The avionics boards are marked with his personally owned LLC name, but he retains personal copyright.
+
+- Every design decision, algorithm, or geometry technique that draws on an external reference
+  **must be cited** in the relevant source file docstring or commit message.
+
+- Derivative files must carry the full attribution chain back to upstream sources.
+
+## Fabrication Standards
+
+-
+## Workflow Notes
+
+- **When adding a standards citation:** look up the standard in `REFERENCES.md` by REF-ID; if it is not yet in the catalog, add it to `REFERENCES.md` with a validated URL and the specific section cited, then use the REF-ID in the code or doc.
+  Never invent or guess a section number — if the section cannot be verified, mark it as "requires verification" in `REFERENCES.md` and add a TODO §0.x item.
+
+- Run Blender scripts with `blender --background --python <script>.py` — the machine supports headless execution.
+- Any time that an assistant creates a todo list to accomplish a task for the build, the steps shall be added as sup-tasks in the appropriate paragraph of the root repository TODO.md wbs, conforming to proper style, so that unresolved issues can be picked up in future sessons.
+
+- The AI assistant shall update PROJECT_INDEX.md, which lists the directory structure and all folders and files in the active project, whenever new active files are added to the repository.  When filess are archived, their names shall be moved from PROJECT_INDEX.md to ARCHIVE_INDEX.md, which describes the file tree of the archive.
