@@ -22,7 +22,6 @@ The **canonical project instructions and standards are in [`AGENTS.md`](AGENTS.m
 
 For work within a specific subsystem, also consult the **federated `AGENTS.md` file in that folder**. These provide additional detail and workflows tailored to that subsystem:
 
-
 **Subordinate files are authoritative for their scope.** If a subordinate file contradicts the root file, follow the subordinate.
 
 ## Critical Standards You Must Follow
@@ -57,13 +56,6 @@ For work within a specific subsystem, also consult the **federated `AGENTS.md` f
 - **Shell walls:** hollowed to 2.0 mm while maintaining a **watertight mesh** with no voids or holes
 - All load-bearing mating surfaces: minimum 2-wall contact annulus + positive-stop shoulder
 - **Mesh validation:** Run after every 3D model modification; report all findings to `TODO.md`
-
-### PCB Design
-
-- Every schematic and PCB must run through KiCad's DRC (Design Rules Checker)
-- Resolve all DRC violations or document them in `TODO.md` with the reason
-- Production-ready Gerber files required for fabrication
-- If a DRC violation requires repositioning a component footprint, **refer the action to the user** — other modifications are allowed
 
 ### STL and SCAD
 
@@ -132,14 +124,6 @@ If the task is unclear or you lack required information, **ask the user explicit
 **Last updated:** 2026-06-30  
 **Authoritative file:** [`AGENTS.md`](AGENTS.md)
 
-## Design Philosophy
-
-- All design decisions are for an **actual physical build**, not hypothetical or conceptual work.
-Every component will be fabricated or procured; design accordingly.
-
-## Scope-Specific Guidance
-
-
 ## Standards Vetting Policy
 
 - **Every design specification with any effect beyond cosmetic appearance must be vetted against applicable industry standards and/or regulations before implementation.**  Standards citations shall be recorded in `REFERENCES.md`, which catalogs every applicable standard with:
@@ -168,17 +152,11 @@ Every component will be fabricated or procured; design accordingly.
     - Thrust, lift, and aerodynamic loads are forces → lbf / (N).  Component weights and payload capacity are masses → lbm / (kg).
     - **Airspeed and wind speed are expressed in knots (kt)** with m/s in parentheses where needed for calculation.  Never use mph or km/h for airspeed.
 
-
-
 ## Coding Standards
 
 - All code shall be clean and syntactically correct.  **Secure coding practices shall be used throughout.**
 
 - All code and documentation shall be written in accordance with **strict linting rules and all linting standards shall be observed.**
-
-- NIST SP 800-82 Rev 3 [REF-NIST-002 §5.3, §5.4, §6.2.5], NIST SP 800-160 Vol 1 Rev 1
-  [REF-NIST-003 Ch.3], and NIST SP 800-207 [REF-NIST-001 §2.1] shall be complied with
-  in information processing and system security engineering
 
 - All code shall use 4 space indenting, whether or not required by the language.
 
@@ -196,9 +174,6 @@ Every component will be fabricated or procured; design accordingly.
 
 - Derivative files must carry the full attribution chain back to upstream sources.
 
-## Fabrication Standards
-
--
 ## Workflow Notes
 
 - **When adding a standards citation:** look up the standard in `REFERENCES.md` by REF-ID; if it is not yet in the catalog, add it to `REFERENCES.md` with a validated URL and the specific section cited, then use the REF-ID in the code or doc.

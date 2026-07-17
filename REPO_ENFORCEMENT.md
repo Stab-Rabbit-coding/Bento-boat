@@ -1,4 +1,4 @@
-Repository Enforcement Checklist
+# Repository Enforcement Checklist
 
 This repository follows the authoritative instructions in `AGENTS.md`.
 Use this checklist to validate commits, code generation, and design artifacts.
